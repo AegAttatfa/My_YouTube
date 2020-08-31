@@ -24,7 +24,7 @@ class App extends React.Component {
   };
 
   componentDidMount() {
-    this.onQuerySubmit("Messi Kick-off");
+    this.onQuerySubmit("React js");
   }
   render() {
     return (
