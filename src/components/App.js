@@ -1,54 +1,32 @@
-import React from "react";
-import Grid from "@material-ui/core/Grid";
-
-import API from "../apis/youtube";
-import "./App.css";
+import React, { useState, useEffect } from "react";
 import SearchBar from "./SearchBar";
 import VideoList from "./VideoList";
 import VideoDetail from "./VideoDetail";
+import useVideos from "../hooks/useVideos";
 
-class App extends React.Component {
-  state = { videos: [], selectedVideo: null };
-  onQuerySubmit = async (query) => {
-    const response = await API.get("search", {
-      params: {
-        q: query,
-      },
-    });
-    this.setState({ videos: response.data.items });
-    this.setState({ selectedVideo: response.data.items[1] });
-  };
+import "./App.css";
 
-  onVideoSelect = (video) => {
-    this.setState({ selectedVideo: video });
-  };
+const App = () => {
+  const [videos, fetchVideos] = useVideos("Docker");
+  const [selectedVideo, setSelectedVideo] = useState(null);
 
-  componentDidMount() {
-    this.onQuerySubmit("React js");
-  }
-  render() {
-    return (
-      <Grid container>
-        <Grid item xs={12}>
-          <div className="search__bar">
-            <SearchBar onFormSubmit={this.onQuerySubmit} />
-          </div>
-        </Grid>
-        <Grid item xs={6}>
-          <div className="video__detail">
-            <VideoDetail video={this.state.selectedVideo} />
-          </div>
-        </Grid>
-        <Grid item xs={6}>
-          <div className="video__list">
-            <VideoList
-              onVideoSelect={this.onVideoSelect}
-              videos={this.state.videos}
-            />
-          </div>
-        </Grid>
-      </Grid>
-    );
-  }
-}
+  useEffect(() => {
+    setSelectedVideo(videos[0]);
+  }, [videos]);
+
+  return (
+    <div className="ui grid">
+      <div className="sixteen wide column">
+        <SearchBar onFormSubmit={fetchVideos} />
+      </div>
+      <div className="ten wide column">
+        <VideoDetail video={selectedVideo} />
+      </div>
+      <div className="six wide list_videos column">
+        <VideoList onVideoSelect={setSelectedVideo} videos={videos} />
+      </div>
+    </div>
+  );
+};
+
 export default App;

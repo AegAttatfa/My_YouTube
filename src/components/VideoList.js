@@ -8,8 +8,8 @@ const VideoList = ({ videos, onVideoSelect }) => {
     );
   });
   return (
-    <div className="videos">
-      <ul>{rendered_list} </ul>
+    <div className="ui centered cards">
+      <ul>{rendered_list}</ul>
     </div>
   );
 };

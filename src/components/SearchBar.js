@@ -1,35 +1,31 @@
-import React from "react";
-import { TextField } from "@material-ui/core";
+import React, { useState } from "react";
 
-class SearchBar extends React.Component {
-  state = { query: "" };
+const SearchBar = ({ onFormSubmit }) => {
+  const [query, setQuery] = useState("");
 
-  onSearchChange = (event) => {
-    this.setState({ query: event.target.value });
-  };
-
-  onSearchSubmit = (event) => {
+  const onSearchSubmit = (event) => {
     event.preventDefault();
     // TODO: make sure to call
     // callback function from the parent App component
-    this.props.onFormSubmit(this.state.query);
+    onFormSubmit(query);
   };
-  render() {
-    return (
-      <div className="search-bar">
-        <form onSubmit={this.onSearchSubmit}>
-          <TextField
-            id="standard-search"
-            label="Search"
-            type="search"
-            fullWidth
-            value={this.state.query}
-            onChange={this.onSearchChange}
+
+  return (
+    <div className="ui big aligned search">
+      <form onSubmit={onSearchSubmit}>
+        <div className="ui icon input">
+          <input
+            className="prompt"
+            type="text"
+            placeholder="Search..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
           />
-        </form>
-      </div>
-    );
-  }
-}
+          <i className="search icon"></i>
+        </div>
+      </form>
+    </div>
+  );
+};
 
 export default SearchBar;
